@@ -2,19 +2,19 @@
 
 open HtmlAgilityPack
 open System.Linq
-
+open System.Text
 
 type HtmlToMarkdown() = 
-    
+    let builder = new StringBuilder()
+
     let walk (node:HtmlNode) = 
-        node.ChildNodes.ToArray()
-         
+         builder.Append node.InnerText |> ignore
 
     member this.Convert (html:string) =
         let doc = new HtmlDocument()
         doc.LoadHtml(html)
-        //doc.DocumentNode.ChildNodes.ToArray()
-        //()
+        walk doc.DocumentNode
+        builder.ToString()
     
 
 

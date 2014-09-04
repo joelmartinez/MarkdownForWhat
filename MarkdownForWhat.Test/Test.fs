@@ -9,6 +9,6 @@ type Test() =
     [<Test>]
     member x.TestCase() =
         let s = new HtmlToMarkdown()
-        None
-        //Assert.AreEqual("F#", s.Parse("F#"));
+        let md = s.Convert "<p>what</p>"
+        Assert.AreEqual("what", md)
 
