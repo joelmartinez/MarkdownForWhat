@@ -27,7 +27,11 @@ type HtmlToMarkdown() =
         builder.Append node.InnerText |> ignore
 
     let handleElement (node:HtmlNode) =
-        builder.Append node.InnerText |> ignore
+        match node.Name with
+        | "em" -> 
+            builder.AppendFormat ("*{0}*", node.InnerText) |> ignore
+        | _ -> 
+            builder.Append node.OuterHtml |> ignore
 
     let rec walk (node:HtmlNode) = 
         let ns = node.ChildNodes.ToArray() |> Array.toList

@@ -7,8 +7,14 @@ open MarkdownForWhat
 type Test() = 
 
     [<Test>]
-    member x.TestCase() =
+    member x.paragraph() =
         let s = new HtmlToMarkdown()
         let md = s.Convert "<p>what</p>"
         Assert.AreEqual("what", md)
+
+    [<Test>]
+    member x.em() =
+        let s = new HtmlToMarkdown()
+        let md = s.Convert "<em>what</em>"
+        Assert.AreEqual("*what*", md)
 
