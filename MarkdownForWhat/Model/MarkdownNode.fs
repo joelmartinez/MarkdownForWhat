@@ -1,4 +1,4 @@
-﻿namespace MarkdownForWhat
+﻿namespace MarkdownForWhat.Model
 
 open System
 

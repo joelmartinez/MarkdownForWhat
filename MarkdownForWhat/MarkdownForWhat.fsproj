@@ -46,16 +46,19 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Script.fsx" />
-    <Compile Include="MarkdownNode.fs" />
-    <Compile Include="MarkdownContainer.fs" />
-    <Compile Include="MarkdownBlock.fs" />
-    <Compile Include="MarkdownParagraph.fs" />
-    <Compile Include="MarkdownText.fs" />
+    <Compile Include="Model\MarkdownNode.fs" />
+    <Compile Include="Model\MarkdownContainer.fs" />
+    <Compile Include="Model\MarkdownBlock.fs" />
+    <Compile Include="Model\MarkdownParagraph.fs" />
+    <Compile Include="Model\MarkdownText.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.1\Framework\v4.0\Microsoft.FSharp.Targets" />
   <ItemGroup>
     <Compile Include="HtmlToMarkdownParser.fs" />
     <Compile Include="HtmlToMarkdown.fs" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
   </ItemGroup>
 </Project>

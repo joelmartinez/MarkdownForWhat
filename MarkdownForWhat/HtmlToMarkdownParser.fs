@@ -2,6 +2,7 @@
 
 open System
 open HtmlAgilityPack
+open MarkdownForWhat.Model
 
 type MarkdownParser() = 
     let blockElements = ["table";

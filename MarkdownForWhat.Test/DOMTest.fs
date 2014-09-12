@@ -3,6 +3,7 @@
 open System
 open NUnit.Framework
 open MarkdownForWhat
+open MarkdownForWhat.Model
 
 [<TestFixture>]
 type DOMTest() = 
