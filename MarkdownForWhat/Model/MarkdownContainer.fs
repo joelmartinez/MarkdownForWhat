@@ -6,6 +6,10 @@ open System.Collections.Generic
 type MarkdownContainer() = 
     inherit MarkdownNode()
 
-    let Children : MarkdownNode list = []
+    let mutable _children : MarkdownNode list = []
+
+    member this.children
+        with get () = _children
+        and set (value) = _children <- value
 
    

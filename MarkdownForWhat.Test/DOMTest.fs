@@ -11,6 +11,10 @@ type DOMTest() =
     member x.paragraph() =
         let s = new MarkdownParser()
 
-        let x:MarkdownText = s.Parse "<p>what</p>"
-        Assert.AreEqual("what", x.value)
+        let x = s.Parse "<p>what</p>"
+
+        let xt:MarkdownContainer = x :?> MarkdownContainer
+        let p = xt.children.Head :?>MarkdownParagraph
+        let text = p.children.Head :?>MarkdownText
+        Assert.AreEqual("what", text.value)
 
