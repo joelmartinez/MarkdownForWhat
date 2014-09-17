@@ -1,25 +1,13 @@
 ﻿namespace MarkdownForWhat
 
+open MarkdownForWhat.Model
+
 open HtmlAgilityPack
+open System
 open System.Linq
 open System.Text
 
 type HtmlToMarkdown() = 
-    let blockElements = ["table";
-            "p";
-            "div";
-            "h1"; "h2"; "h3"; "h4"; "h5"; "h6";
-            "ol"; "ul";
-            "pre"; 
-            "address";
-            "blockquote";
-            "center";
-            "dl";
-            "fieldset";
-            "form";
-            "menu";
-            "body"]
-
     let builder = new StringBuilder()
 
 
@@ -33,31 +21,28 @@ type HtmlToMarkdown() =
         | _ -> 
             builder.Append node.OuterHtml |> ignore
 
-    let rec walk (node:HtmlNode) = 
-        let ns = node.ChildNodes.ToArray() |> Array.toList
+    let rec walk (node:MarkdownNode) = 
 
-        let isblock = List.exists (fun e -> e = node.Name) blockElements 
+        match node.GetType() with
+        | x when x = typeof<MarkdownText> ->
+            let text:MarkdownText = downcast node
+            builder.Append text.value |> ignore
+        | x when x = typeof<MarkdownParagraph> ->
+            let p:MarkdownParagraph = downcast node
 
-        match node.NodeType with
-        | HtmlNodeType.Document -> 
-            List.iter (fun n -> walk n) ns
-        | HtmlNodeType.Element -> 
-            match isblock with
-            | true -> handleBlock node
-            | _ -> handleElement node
-        | HtmlNodeType.Text -> 
-            builder.Append node.InnerText |> ignore
-        | _ -> 
-            builder.Append node.OuterHtml |> ignore
+            builder.Append Environment.NewLine |> ignore
+            builder.Append Environment.NewLine |> ignore
+            List.iter (fun n -> walk n) p.children
+        | x when x = typeof<MarkdownContainer> ->
+            let container:MarkdownContainer = downcast node
+            List.iter (fun n -> walk n) container.children
+        | _ ->
+            builder.Append (node.GetType()) |> ignore
 
 
-    member this.Convert (html:string) =
-        let doc = new HtmlDocument()
-        doc.LoadHtml(html)
-        walk doc.DocumentNode
-        builder.ToString()
+    member this.Convert (md:MarkdownNode) =
+        walk md
+        builder.ToString().Trim()
 
     
-
-
 

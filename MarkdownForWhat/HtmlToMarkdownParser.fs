@@ -45,8 +45,8 @@ type MarkdownParser() =
     and handleBlock (node:HtmlNode) = 
         let p = new MarkdownParagraph()
 
-        let text = new MarkdownText()
-        text.value <- node.InnerText;
+        //let text = new MarkdownText()
+        //text.value <- node.InnerText;
         let inners = node.ChildNodes.ToArray() |> Array.toList
         p.children <- List.map (fun n -> walk n) inners
         p

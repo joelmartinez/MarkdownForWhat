@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="Script.fsx" />
     <Compile Include="Model\MarkdownNode.fs" />
     <Compile Include="Model\MarkdownContainer.fs" />
     <Compile Include="Model\MarkdownBlock.fs" />
@@ -61,6 +60,7 @@
     <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Script.fsx" />
     <None Include="packages.config" />
   </ItemGroup>
 </Project>
