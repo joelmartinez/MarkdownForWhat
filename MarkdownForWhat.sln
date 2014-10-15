@@ -21,7 +21,7 @@ Global
 		{9AD4EB6C-CE7B-4CE8-A96B-E84B320E975F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = MarkdownForWhat\MarkdownForWhat.fsproj
+		StartupItem = MarkdownForWhat.Test\MarkdownForWhat.Test.fsproj
 		Policies = $0
 		$0.VersionControlPolicy = $1
 		$1.CommitMessageStyle = $2
