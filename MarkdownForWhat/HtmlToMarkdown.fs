@@ -27,6 +27,11 @@ type HtmlToMarkdown() =
         | x when x = typeof<MarkdownText> ->
             let text:MarkdownText = downcast node
             builder.Append text.value |> ignore
+        | x when x = typeof<MarkdownStrong> ->
+            let b:MarkdownStrong = downcast node
+            builder.Append "**" |> ignore
+            List.iter (fun n -> walk n) b.children
+            builder.Append "**" |> ignore
         | x when x = typeof<MarkdownParagraph> ->
             let p:MarkdownParagraph = downcast node
 

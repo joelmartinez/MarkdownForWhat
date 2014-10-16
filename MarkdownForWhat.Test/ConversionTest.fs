@@ -5,13 +5,19 @@ open MarkdownForWhat
 open MarkdownForWhat.Model
 
 [<TestFixture>]
-type Test() = 
+type ConversionTest() = 
     let makeP (container:MarkdownContainer, value:string) =
         let p = new MarkdownParagraph();
         let t = new MarkdownText();
         t.value <- value
         p.children <- List.append p.children [t]
         container.children <- List.append container.children [p]
+    let makeStrong (container:MarkdownContainer, value:string) =
+        let b = new MarkdownStrong();
+        let t = new MarkdownText();
+        t.value <- value
+        b.children <- List.append b.children [t]
+        container.children <- List.append container.children [b] 
 
     [<Test>]
     member x.paragraph() =
@@ -33,10 +39,11 @@ type Test() =
         Assert.AreEqual("for\n\nwhat", md)
 
 
-        (*
     [<Test>]
-    member x.em() =
+    member x.strong() =
+        let c = new MarkdownContainer();
+        makeStrong (c, "what")
+
         let s = new HtmlToMarkdown()
-        let md = s.Convert "<em>what</em>"
-        Assert.AreEqual("*what*", md)
-        *)
+        let md = s.Convert c
+        Assert.AreEqual("**what**", md)
