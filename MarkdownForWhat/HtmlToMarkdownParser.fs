@@ -40,7 +40,10 @@ type MarkdownParser() =
             let text = new MarkdownText();
             text.value <- node.InnerText
             text :> MarkdownNode
-        | _ -> new MarkdownNode()
+        | _ -> 
+            let html = new MarkdownHtml()
+            html.OuterHtml <- node.OuterHtml
+            html :> MarkdownNode
 
     and handleBlock (node:HtmlNode) = 
         let p = new MarkdownParagraph()
@@ -58,11 +61,15 @@ type MarkdownParser() =
             let strong = new MarkdownStrong()
             strong.children <- List.map (fun n -> walk n) children
             strong :> MarkdownNode
-        | _ ->
+        | n when n = "#text" ->
             let text = new MarkdownText()
             text.value <- node.InnerText;
 
             text :> MarkdownNode
+        | _ ->
+            let html = new MarkdownHtml()
+            html.OuterHtml <- node.OuterHtml
+            html :> MarkdownNode
 
     member this.Parse (html:string) =
         let doc = new HtmlDocument()

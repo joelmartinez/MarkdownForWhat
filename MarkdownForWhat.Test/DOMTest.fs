@@ -47,8 +47,16 @@ type DOMTest() =
     member x.strong_strong() =
         x.strongTest "strong"
 
-    
     [<Test>]
     member x.strong_bold() =
         x.strongTest "b"
 
+    [<Test>]
+    member x.unknown_html_block_should_remain() = 
+        let s = new MarkdownParser()
+
+        let x = s.Parse @"<somehtml>what</somehtml>"
+
+        let xt:MarkdownContainer = x :?> MarkdownContainer
+        let h = xt.children.Head :?> MarkdownHtml
+        Assert.AreEqual("<somehtml>what</somehtml>", h.OuterHtml)
