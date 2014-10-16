@@ -45,17 +45,24 @@ type MarkdownParser() =
     and handleBlock (node:HtmlNode) = 
         let p = new MarkdownParagraph()
 
-        //let text = new MarkdownText()
-        //text.value <- node.InnerText;
         let inners = node.ChildNodes.ToArray() |> Array.toList
         p.children <- List.map (fun n -> walk n) inners
         p
 
     and handleElement (node:HtmlNode) =
-        let text = new MarkdownText()
-        text.value <- node.InnerText;
+        let name = node.Name.ToLower()
+        let children = node.ChildNodes.ToArray() |> Array.toList
 
-        text
+        match name with
+        | "strong" -> 
+            let strong = new MarkdownStrong()
+            strong.children <- List.map (fun n -> walk n) children
+            strong :> MarkdownNode
+        | _ ->
+            let text = new MarkdownText()
+            text.value <- node.InnerText;
+
+            text :> MarkdownNode
 
     member this.Parse (html:string) =
         let doc = new HtmlDocument()

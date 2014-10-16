@@ -50,6 +50,8 @@
     <Compile Include="Model\MarkdownBlock.fs" />
     <Compile Include="Model\MarkdownParagraph.fs" />
     <Compile Include="Model\MarkdownText.fs" />
+    <Compile Include="Model\MarkdownSpan.fs" />
+    <Compile Include="Model\MarkdownStrong.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.1\Framework\v4.0\Microsoft.FSharp.Targets" />
   <ItemGroup>

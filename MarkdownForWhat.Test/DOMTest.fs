@@ -33,3 +33,14 @@ type DOMTest() =
         let text2 = p2.children.Head :?> MarkdownText
         Assert.AreEqual("what", text2.value)
 
+    [<Test>]
+    member x.bold() =
+        let s = new MarkdownParser()
+
+        let x = s.Parse "<strong>what</strong>"
+
+        let xt:MarkdownContainer = x :?> MarkdownContainer
+        let b = xt.children.Head :?> MarkdownStrong
+        let text = b.children.Head :?> MarkdownText
+        Assert.AreEqual("what", text.value)
+
