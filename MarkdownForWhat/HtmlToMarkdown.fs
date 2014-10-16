@@ -38,11 +38,14 @@ type HtmlToMarkdown() =
             builder.Append Environment.NewLine |> ignore
             builder.Append Environment.NewLine |> ignore
             List.iter (fun n -> walk n) p.children
+        | x when x = typeof<MarkdownHtml> ->
+            let h:MarkdownHtml = downcast node
+            builder.Append h.OuterHtml |> ignore
         | x when x = typeof<MarkdownContainer> ->
             let container:MarkdownContainer = downcast node
             List.iter (fun n -> walk n) container.children
         | _ ->
-            builder.Append (node.GetType()) |> ignore
+            failwith "unsure how to handle " + node.GetType().ToString() |> ignore
 
 
     member this.Convert (md:MarkdownNode) =

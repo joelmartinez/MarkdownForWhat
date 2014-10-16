@@ -18,6 +18,10 @@ type ConversionTest() =
         t.value <- value
         b.children <- List.append b.children [t]
         container.children <- List.append container.children [b] 
+    let makeHtml (container:MarkdownContainer, value:string) =
+        let h = new MarkdownHtml();
+        h.OuterHtml <- value
+        container.children <- List.append container.children [h] 
 
     [<Test>]
     member x.paragraph() =
@@ -47,3 +51,16 @@ type ConversionTest() =
         let s = new HtmlToMarkdown()
         let md = s.Convert c
         Assert.AreEqual("**what**", md)
+
+
+
+    [<Test>]
+    member x.html() =
+        let htmlString = "<somehtml>derp</somehtml>"
+
+        let c = new MarkdownContainer();
+        makeHtml (c, htmlString)
+
+        let s = new HtmlToMarkdown()
+        let md = s.Convert c
+        Assert.AreEqual(htmlString, md)
