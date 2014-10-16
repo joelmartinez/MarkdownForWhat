@@ -2,6 +2,24 @@
 
 This project aims to create an HTML to Markdown parser and converter. It is written with F&#35;.
 
+## Usage
+
+There are currently two steps, the parser, and then the conversion to markdown.
+
+        let parser = new MarkdownParser()
+        let dom = parser.Parse "<p>markdown</p>\n<p>for</p>\n<p>what</p>"
+        
+        let converter = new HtmlToMarkdown()
+        let md = converter.Convert dom
+        
+this outputs the string:
+
+    "markdown
+    
+    for
+    
+    what"
+
 ## Status
 This is still a work-in-progress and is still heavily in development.
 
