@@ -54,7 +54,7 @@ type MarkdownParser() =
         let children = node.ChildNodes.ToArray() |> Array.toList
 
         match name with
-        | "strong" -> 
+        | n when n = "strong" || n = "b" -> 
             let strong = new MarkdownStrong()
             strong.children <- List.map (fun n -> walk n) children
             strong :> MarkdownNode
