@@ -60,3 +60,15 @@ type DOMTest() =
         let xt:MarkdownContainer = x :?> MarkdownContainer
         let h = xt.children.Head :?> MarkdownHtml
         Assert.AreEqual("<somehtml>what</somehtml>", h.OuterHtml)
+
+    [<Test>]
+    member x.link() =
+        let s = new MarkdownParser()
+
+        let x = s.Parse @"<a href=""http://for.com"">what</a>"
+
+        let xt:MarkdownContainer = x :?> MarkdownContainer
+        let l = xt.children.Head :?> MarkdownLink
+        let t = l.children.Head :?> MarkdownText
+        Assert.AreEqual("http://for.com", l.href)
+        Assert.AreEqual("what", t.value)

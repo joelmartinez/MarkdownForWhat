@@ -66,6 +66,11 @@ type MarkdownParser() =
             text.value <- node.InnerText;
 
             text :> MarkdownNode
+        | n when n = "a" ->
+            let link = new MarkdownLink()
+            link.href <- node.GetAttributeValue("href", "")
+            link.children <- List.map (fun n -> walk n) children
+            link :> MarkdownNode
         | _ ->
             let html = new MarkdownHtml()
             html.OuterHtml <- node.OuterHtml
