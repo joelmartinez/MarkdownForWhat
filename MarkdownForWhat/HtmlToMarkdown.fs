@@ -24,6 +24,11 @@ type HtmlToMarkdown() =
     let rec walk (node:MarkdownNode) = 
 
         match node.GetType() with
+        | x when x = typeof<MarkdownLink> ->
+            let link:MarkdownLink = downcast node
+            builder.AppendFormat "[" |> ignore
+            List.iter (fun n -> walk n) link.children
+            builder.AppendFormat ("]({0})", link.href) |> ignore
         | x when x = typeof<MarkdownText> ->
             let text:MarkdownText = downcast node
             builder.Append text.value |> ignore

@@ -5,4 +5,8 @@ open System
 type MarkdownLink() = 
     inherit MarkdownSpan()
 
-    member val href:string = null with get, set
+    let mutable _href : string = "";
+
+    member this.href
+        with get () = _href
+        and set (value) = _href <- value

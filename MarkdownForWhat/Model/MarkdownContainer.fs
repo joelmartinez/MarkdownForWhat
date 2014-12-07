@@ -12,4 +12,6 @@ type MarkdownContainer() =
         with get () = _children
         and set (value) = _children <- value
 
-   
+    member this.add (child:MarkdownNode) =
+        _children <- List.append _children [child]
+        this

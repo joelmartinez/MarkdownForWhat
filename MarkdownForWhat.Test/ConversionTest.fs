@@ -10,18 +10,28 @@ type ConversionTest() =
         let p = new MarkdownParagraph();
         let t = new MarkdownText();
         t.value <- value
-        p.children <- List.append p.children [t]
-        container.children <- List.append container.children [p]
+        p.add t |> ignore
+        container.add p
+
     let makeStrong (container:MarkdownContainer, value:string) =
         let b = new MarkdownStrong();
         let t = new MarkdownText();
         t.value <- value
-        b.children <- List.append b.children [t]
-        container.children <- List.append container.children [b] 
+        b.add t |> ignore
+        container.add b
+
     let makeHtml (container:MarkdownContainer, value:string) =
         let h = new MarkdownHtml();
         h.OuterHtml <- value
         container.children <- List.append container.children [h] 
+    let makeA (container:MarkdownContainer, href:string, value:string) =
+        let h = new MarkdownLink();
+        h.href <- href
+        let t = new MarkdownText()
+        t.value <- value
+        //t |> h.add |> container.add
+        container.add (h.add t)
+
 
     [<Test>]
     member x.paragraph() =
@@ -64,3 +74,13 @@ type ConversionTest() =
         let s = new HtmlToMarkdown()
         let md = s.Convert c
         Assert.AreEqual(htmlString, md)
+
+    [<Test>]
+    member x.link() =
+        let c = new MarkdownContainer()
+        makeA (c, "http://for.what", "markdown")
+        let expected = @"[markdown](http://for.what)"
+
+        let s = new HtmlToMarkdown()
+        let md = s.Convert c
+        Assert.AreEqual(expected, md)
