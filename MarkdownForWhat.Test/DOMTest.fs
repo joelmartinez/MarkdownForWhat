@@ -61,6 +61,26 @@ type DOMTest() =
         let h = xt.children.Head :?> MarkdownHtml
         Assert.AreEqual("<somehtml>what</somehtml>", h.OuterHtml)
 
+    
+    [<Test>]
+    member x.spans_in_text_should_remain() = 
+        let s = new MarkdownParser()
+
+        let x = s.Parse @"this <b>is</b> <span class=""someclass"">some</span> text"
+
+        let p:MarkdownContainer = x :?> MarkdownContainer
+
+        let thisText = p.children.Head :?> MarkdownText
+        let isStrong = p.children.Tail.Head :?> MarkdownStrong
+        let aSpace   = p.children.Tail.Tail.Head :?> MarkdownText
+        let someHtml = p.children.Tail.Tail.Tail.Head :?> MarkdownHtml
+        let lastText = p.children.Tail.Tail.Tail.Tail.Head :?> MarkdownText
+
+        Assert.AreEqual(@"this ", thisText.value)
+        Assert.AreEqual("is", (isStrong.children.Head :?> MarkdownText).value)
+        Assert.AreEqual(@"<span class=""someclass"">some</span>", someHtml.OuterHtml)
+        Assert.AreEqual(" text", lastText.value);
+
     [<Test>]
     member x.link() =
         let s = new MarkdownParser()
