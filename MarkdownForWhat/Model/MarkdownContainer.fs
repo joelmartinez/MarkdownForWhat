@@ -14,4 +14,3 @@ type MarkdownContainer() =
 
     member this.add (child:MarkdownNode) =
         _children <- List.append _children [child]
-        this

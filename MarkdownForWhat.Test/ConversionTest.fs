@@ -6,38 +6,38 @@ open MarkdownForWhat.Model
 
 [<TestFixture>]
 type ConversionTest() = 
-    let makeText (container:MarkdownContainer, value:string) =
+    let makeText (value:string) =
         let t = new MarkdownText();
         t.value <- value
-        container.add t |> ignore
+        t
 
-    let makeP (container:MarkdownContainer, value:string) =
+    let makeP (value:string) =
         let p = new MarkdownParagraph();
-        makeText (p, value)
-        container.add p |> ignore
+        makeText value |> p.add 
+        p
 
-    let makeStrong (container:MarkdownContainer, value:string) =
+    let makeStrong (value:string) =
         let b = new MarkdownStrong();
-        makeText (b, value)
-        container.add b |> ignore
+        makeText value |> b.add
+        b
 
-    let makeHtml (container:MarkdownContainer, value:string) =
+    let makeHtml (value:string) =
         let h = new MarkdownHtml();
         h.OuterHtml <- value
-        container.children <- List.append container.children [h] 
+        h
 
-    let makeA (container:MarkdownContainer, href:string, value:string) =
+    let makeA (href:string) (value:string) =
         let h = new MarkdownLink();
         h.href <- href
-        let t = new MarkdownText()
-        t.value <- value
-        container.add (h.add t) |> ignore
+        makeText value |> h.add
+        h
+
 
 
     [<Test>]
     member x.paragraph() =
         let c = new MarkdownContainer();
-        makeP (c, "what") |> ignore
+        makeP "what" |> c.add
 
         let s = new HtmlToMarkdown()
         let md = s.Convert c
@@ -46,8 +46,8 @@ type ConversionTest() =
     [<Test>]
     member x.paragraph_double() =
         let c = new MarkdownContainer();
-        makeP (c, "for") |> ignore
-        makeP (c, "what") |> ignore
+        makeP "for" |> c.add
+        makeP "what" |> c.add
 
         let s = new HtmlToMarkdown()
         let md = s.Convert c
@@ -56,7 +56,7 @@ type ConversionTest() =
     [<Test>]
     member x.strong() =
         let c = new MarkdownContainer();
-        makeStrong (c, "what")
+        makeStrong "what" |> c.add
 
         let s = new HtmlToMarkdown()
         let md = s.Convert c
@@ -69,7 +69,7 @@ type ConversionTest() =
         let htmlString = "<somehtml>derp</somehtml>"
 
         let c = new MarkdownContainer();
-        makeHtml (c, htmlString)
+        makeHtml htmlString |> c.add
 
         let s = new HtmlToMarkdown()
         let md = s.Convert c
@@ -79,11 +79,11 @@ type ConversionTest() =
     member x.html_span_should_remain() =
         let htmlString =  @"this <b>is</b> <span class=""someclass"">some</span> text"
         let c = new MarkdownContainer()
-        makeText (c, "this ")
-        makeStrong (c, "is")
-        makeText (c, " ")
-        makeHtml (c, @"<span class=""someclass"">some</span>");
-        makeText (c, " text")
+        makeText "this " |> c.add
+        makeStrong "is" |> c.add
+        makeText " " |> c.add
+        makeHtml @"<span class=""someclass"">some</span>" |> c.add
+        makeText " text" |> c.add
 
         let s = new HtmlToMarkdown()
         let md = s.Convert c
@@ -92,7 +92,7 @@ type ConversionTest() =
     [<Test>]
     member x.link() =
         let c = new MarkdownContainer()
-        makeA (c, "http://for.what", "markdown")
+        makeA "http://for.what" "markdown" |> c.add
         let expected = @"[markdown](http://for.what)"
 
         let s = new HtmlToMarkdown()
